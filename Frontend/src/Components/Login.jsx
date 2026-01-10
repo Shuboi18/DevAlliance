@@ -8,6 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState("Password12345");
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState("");
     const handleLogin = async () => {
         try {
 
@@ -21,7 +22,8 @@ const Login = () => {
             navigate("/profiledashboard");
         }
         catch (err) {
-            console.log(err);
+            setErrorMessage(err?.response?.data || "Something went wrong");
+
         }
     }
     return (
@@ -42,7 +44,9 @@ const Login = () => {
                             <input value={password} type="text" className="input" placeholder="Type here" onChange={(event) => { setPassword(event.target.value) }} />
                         </fieldset>
                     </div>
-
+                    <div>
+                        <p className="text-red-500">{errorMessage}</p>
+                    </div>
                     <div className="card-actions justify-center">
                         <button onClick={handleLogin} className="btn btn-primary">Log in</button>
                     </div>

@@ -71,3 +71,12 @@ app.get("/getProfile", userAuth, async (req, res) => {
     res.status(500).send("Error retrieving profile");
   }
 });
+
+app.post("/logout", async (req, res) => {
+  try {
+    res.cookie("loginToken", "", { expires: new Date(Date.now()) });
+    res.send("User logged out successfully");
+  } catch (err) {
+    res.status(500).send("Error logging out user");
+  }
+});

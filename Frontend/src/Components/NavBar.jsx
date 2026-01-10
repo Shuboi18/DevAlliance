@@ -1,12 +1,22 @@
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
+import { removeUserInfo } from "../assets/userSlice";
+import axios from "axios";
 const NavBar = () => {
     const user = useSelector(store => store.user)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const buttonLogout = async () => {
+        await axios.post("http://localhost:3000/logout", {}, { withCredentials: true });
+        dispatch(removeUserInfo());
+        navigate("/login");
+    }
     console.log(user);
     return (<div>
         <div className="navbar bg-base-300 shadow-sm">
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl">DevAlliance</a>
+                <Link to="/" className="btn btn-ghost text-xl">DevAlliance</Link>
             </div>
             <div className="flex gap-2">
                 {user && (
@@ -22,13 +32,13 @@ const NavBar = () => {
                             tabIndex="-1"
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                             <li>
-                                <a className="justify-between">
+                                <Link to="/profiledashboard" className="justify-between">
                                     Profile
                                     <span className="badge">New</span>
-                                </a>
+                                </Link>
                             </li>
                             <li><a>Settings</a></li>
-                            <li><a>Logout</a></li>
+                            <li><button onClick={buttonLogout}>Logout</button></li>
                         </ul>
                     </div>)}
             </div>
