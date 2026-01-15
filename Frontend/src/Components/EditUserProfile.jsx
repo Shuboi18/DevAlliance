@@ -2,16 +2,14 @@ import axios from "axios";
 import { useState } from "react";
 
 const EditUserProfile = ({user}) => {
-    const [editFname, seteditFname] = useState(user.fname );
-    const [editLname, seteditLname] = useState( user.lname );
-    const email = user.email;
+    const [fname, seteditFname] = useState(user.fname);
+    const [lname, seteditLname] = useState(user.lname);
     if (!user) return;
     const editProfileButton = async () => {
         try {
-            const res = await axios.patch("http://localhost:3000/editProfile", {
-                editFname,
-                editLname,
-                email
+            const res = await axios.patch("http://localhost:3000/profile/editProfile", {
+                fname,
+                lname
             }, { withCredentials: true });
             console.log(res?.data)
         }
@@ -27,13 +25,13 @@ return (
                 <div>
                     <fieldset className="fieldset">
                         <legend className="fieldset-legend">First Name</legend>
-                        <input value={editFname} type="text" className="input" placeholder="Type here" onChange={(event) => { seteditFname(event.target.value) }} />
+                        <input value={fname} type="text" className="input" placeholder="Type here" onChange={(event) => { seteditFname(event.target.value) }} />
                     </fieldset>
                 </div>
                 <div>
                     <fieldset className="fieldset">
                         <legend className="fieldset-legend">Last Name</legend>
-                        <input value={editLname} type="text" className="input" placeholder="Type here" onChange={(event) => { seteditLname(event.target.value) }} />
+                        <input value={lname} type="text" className="input" placeholder="Type here" onChange={(event) => { seteditLname(event.target.value) }} />
                     </fieldset>
                 </div>
                 <div className="card-actions justify-center">

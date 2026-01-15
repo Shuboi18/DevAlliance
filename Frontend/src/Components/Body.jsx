@@ -13,7 +13,7 @@ const Body = () => {
     const fetchUser = async () => {
         if (user) return;
         try {
-            const res = await axios.get("http://localhost:3000/getProfile", { withCredentials: true })
+            const res = await axios.get("http://localhost:3000/profile/getProfile", { withCredentials: true })
             dispatch(addUserInfo(res?.data))
         }
         catch (err) {

@@ -7,7 +7,7 @@ const Signup = () => {
     const [lname, setLname] = useState("");
     const handleSignup = async () => { 
         try {
-            const res =await axios.post("http://localhost:3000/signup", {
+            const res = await axios.post("http://localhost:3000/user/signup", {
                 fname,
                 lname,
                 email,

@@ -8,7 +8,7 @@ const NavBar = () => {
     const navigate = useNavigate();
 
     const buttonLogout = async () => {
-        await axios.post("http://localhost:3000/logout", {}, { withCredentials: true });
+        await axios.post("http://localhost:3000/user/logout", {}, { withCredentials: true });
         dispatch(removeUserInfo());
         navigate("/login");
     }
