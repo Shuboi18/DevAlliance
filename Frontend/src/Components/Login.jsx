@@ -18,8 +18,8 @@ const Login = () => {
             },
                 { withCredentials: true }
             );
-            dispatch(addUserInfo(res.data));
-            navigate("/profiledashboard");
+            dispatch(addUserInfo(res?.data));
+            navigate("/getUserFeed");
         }
         catch (err) {
             setErrorMessage(err?.response?.data || "Something went wrong");

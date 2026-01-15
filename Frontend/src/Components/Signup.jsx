@@ -13,7 +13,7 @@ const Signup = () => {
                 email,
                 password
             });
-            console.log(res.data);
+            console.log(res?.data);
         }
         catch (err) {
             console.log(err);

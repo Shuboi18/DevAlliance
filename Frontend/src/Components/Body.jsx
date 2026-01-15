@@ -7,13 +7,14 @@ import { addUserInfo } from "../assets/userSlice"
 import { useEffect } from "react"
 
 const Body = () => {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const user = useSelector((state) => state.user)
     const fetchUser = async () => {
+        if (user) return;
         try {
             const res = await axios.get("http://localhost:3000/getProfile", { withCredentials: true })
-            dispatch(addUserInfo(res.data));
+            dispatch(addUserInfo(res?.data))
         }
         catch (err) {
             if (err.status === 401) {
@@ -24,9 +25,7 @@ const Body = () => {
     }
 
     useEffect(() => {
-        if (!user) {
-            fetchUser()
-        }
+        fetchUser()
     }, );
     return (
         <div>
