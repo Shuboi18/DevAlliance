@@ -58,6 +58,12 @@ userRouter.post("/user/logout", async (req, res) => {
 userRouter.get("/user/getUserFeed", userAuth, async (req, res) => {
   try {
     const user = req.user._id;
+    const page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    limit = limit > 50 ? 50 : limit;
+
     const allConnections = await ConnectRequest.find({
       $or: [{ fromUserID: user }, { toUserID: user }],
     }).select("fromUserID toUserID");
@@ -72,7 +78,7 @@ userRouter.get("/user/getUserFeed", userAuth, async (req, res) => {
 
     const userFeed = await User.find({
       _id: { $nin: Array.from(hiddenUsersSet) },
-    }).select("fname lname");
+    }).select("fname lname").skip(skip).limit(limit);
     res.send(userFeed);
   } catch (err) {
     res.status(500).send("Error retrieving user feed");
