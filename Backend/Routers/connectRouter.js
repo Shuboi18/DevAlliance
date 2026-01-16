@@ -2,22 +2,26 @@ const express = require("express");
 const connectRouter = express.Router();
 const ConnectRequest = require("../Models/connectReqSchema");
 const { userAuth } = require("../userAuth");
-const User = require("../Models/userSchema")
+const User = require("../Models/userSchema");
+const requestedFields = ["fname", "lname", "age", "bio", "skills", "photoURL"];
 
-connectRouter.post("/connect/request/:status/:toUserID",userAuth,async (req, res) => {
+connectRouter.post(
+  "/connect/request/:status/:toUserID",
+  userAuth,
+  async (req, res) => {
     try {
       const fromUserID = req.user._id;
       const toUserID = req.params.toUserID;
       const status = req.params.status;
       const allowedStatus = ["ignored", "interested"];
 
-    if (fromUserID.toString() === toUserID.toString()) {
-    return res.status(400).send("Cannot send a request to yourself");
-    }
+      if (fromUserID.toString() === toUserID.toString()) {
+        return res.status(400).send("Cannot send a request to yourself");
+      }
       if (!allowedStatus.includes(status)) {
         return res.status(400).send("Bad Request");
       }
-        const checkValidConnection = await User.findById(toUserID);
+      const checkValidConnection = await User.findById(toUserID);
       if (!checkValidConnection) {
         return res.status(400).send("User does not exist please check again");
       }
@@ -44,7 +48,6 @@ connectRouter.post("/connect/request/:status/:toUserID",userAuth,async (req, res
   }
 );
 
-
 //doubt
 connectRouter.patch(
   "/connect/response/:status/:_id",
@@ -70,9 +73,13 @@ connectRouter.patch(
 connectRouter.get("/connect/pendingConnections", userAuth, async (req, res) => {
   try {
     const user = req.user._id;
-    const pendingConnections = await ConnectRequest.find({ toUserID: user, status: "interested" }).populate("fromUserID",["fname","lname"]);
-    if (!pendingConnections)
-    {return res.send("No requests to show")}
+    const pendingConnections = await ConnectRequest.find({
+      toUserID: user,
+      status: "interested",
+    }).populate("fromUserID", requestedFields);
+    if (!pendingConnections) {
+      return res.send("No requests to show");
+    }
     res.send(pendingConnections);
   } catch (err) {
     res.status(400).send("Something went wrong");
@@ -88,9 +95,9 @@ connectRouter.get("/connect/myConnections", userAuth, async (req, res) => {
         { fromUserID: user, status: "accepted" },
       ],
     })
-      .populate("fromUserID", ["fname", "lname"])
-      .populate("toUserID", ["fname", "lname"]);
-    
+      .populate("fromUserID", requestedFields)
+      .populate("toUserID", requestedFields);
+
     res.send(myConnections);
   } catch (err) {
     res.status(400).send("Something went wrong");

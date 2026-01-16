@@ -4,16 +4,21 @@ const User = require("../Models/userSchema");
 const bcrypt = require("bcrypt");
 const { userAuth } = require("../userAuth");
 const ConnectRequest = require("../Models/connectReqSchema");
-
+const requestedFields = "fname lname age bio skills photoURL";
 userRouter.post("/user/signup", async (req, res) => {
   // Signup logic will go here
   try {
-    const { fname, lname, email, password } = req.body;
+    const { fname, lname, email, age, bio, skills, photoURL, password } =
+      req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       fname,
       lname,
       email,
+      age,
+      bio,
+      skills,
+      photoURL,
       password: hashedPassword,
     });
     await user.save();
@@ -78,7 +83,10 @@ userRouter.get("/user/getUserFeed", userAuth, async (req, res) => {
 
     const userFeed = await User.find({
       _id: { $nin: Array.from(hiddenUsersSet) },
-    }).select("fname lname").skip(skip).limit(limit);
+    })
+      .select(requestedFields)
+      .skip(skip)
+      .limit(limit);
     res.send(userFeed);
   } catch (err) {
     res.status(500).send("Error retrieving user feed");

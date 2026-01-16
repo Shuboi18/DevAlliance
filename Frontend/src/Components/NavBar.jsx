@@ -12,7 +12,6 @@ const NavBar = () => {
         dispatch(removeUserInfo());
         navigate("/login");
     }
-    console.log(user);
     return (<div>
         <div className="navbar bg-base-300 shadow-sm">
             <div className="flex-1">
@@ -34,10 +33,10 @@ const NavBar = () => {
                             <li>
                                 <Link to="/profiledashboard" className="justify-between">
                                     Profile
-                                    <span className="badge">New</span>
                                 </Link>
                             </li>
-                            <li><a>Settings</a></li>
+                            <li><Link to="/PendingConnectionList">Pending Requests</Link></li>
+                            <li><Link to="/UserConnectionList">My Connections</Link></li>
                             <li><button onClick={buttonLogout}>Logout</button></li>
                         </ul>
                     </div>)}

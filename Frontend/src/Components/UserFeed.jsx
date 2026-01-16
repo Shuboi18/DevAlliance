@@ -5,25 +5,27 @@ import { useEffect } from "react";
 import UserFeedCard from "./UserFeedCard";
 
 const UserFeed = () => {
-    // const dispatch = useDispatch();
-    // const feedStore = useSelector((state) => state.Feed);
-    // const getFeed = async () => {
-    //     if(feedStore) return;
-    //     try {
-    //         const res = await axios.get("http://localhost:3000/getUserFeed", { withCredentials: true });
-    //         dispatch(addFeed(res.data));
-            
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // }
+    const dispatch = useDispatch();
+    const feedStore = useSelector((state) => state.Feed);
+    const getFeed = async () => {
 
-    // useEffect(() => {
-    //     getFeed();
-    // },);
-    
+        try {
+            const res = await axios.get("http://localhost:3000/user/getUserFeed", { withCredentials: true });
+            let data = res?.data;
+            data.map((feedData) => {
+                dispatch(addFeed(feedData));
+            })
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    useEffect(() => {
+        getFeed();
+    }, []);
+
     return (
-        <div className="flex justify-center my-10"><UserFeedCard /></div>
+        <div className="flex justify-center my-10"><UserFeedCard feedStore={feedStore} /></div>
     )
 }
 export default UserFeed;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUserInfo } from "../assets/userSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
     const [email, setemailId] = useState("chirag1790@gmail.com");
     const [password, setPassword] = useState("Password12345");
@@ -18,7 +18,7 @@ const Login = () => {
             },
                 { withCredentials: true }
             );
-            dispatch(addUserInfo(res?.data));
+            dispatch(addUserInfo(res?.data?.user));
             navigate("/getUserFeed");
         }
         catch (err) {
@@ -47,8 +47,12 @@ const Login = () => {
                     <div>
                         <p className="text-red-500">{errorMessage}</p>
                     </div>
-                    <div className="card-actions justify-center">
+                    <div className="card-actions justify-center mt-">
                         <button onClick={handleLogin} className="btn btn-primary">Log in</button>
+                    </div>
+
+                    <div className="mt-5 text-center">
+                        <Link to="/signup">Don't Have an account ? Sign Up</Link>
                     </div>
                 </div>
             </div>
