@@ -20,6 +20,14 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  gender: {
+    type: String,
+    required: true,
+    enum: {
+      values: ["Male", "Female", "Others"],
+      message: "Please select a valid gender",
+    },
+  },
   bio: {
     type: String,
     required: true,

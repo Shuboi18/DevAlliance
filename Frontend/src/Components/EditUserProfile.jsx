@@ -7,29 +7,27 @@ const EditUserProfile = ({ user }) => {
     const [bio, seteditBio] = useState(user.bio);
     const [skills, seteditSkills] = useState(user.skills);
     const [photoURL, seteditPhotoURL] = useState(user.photoURL);
+    const [gender, seteditGender] = useState("");
 
-    // useEffect(() => {
-    //     if (user) {
-    //         seteditFname(user.fname || "");
-    //         seteditLname(user.lname || "");
-    //         seteditBio(user.bio || "");
-    //         seteditSkills(user.skills || "");
-    //         seteditPhotoURL(user.photoURL || "");
-    //     }
-    // }, [user]);
-
-    // if (!user) {
-    //     return <div>Chirag.....</div>;
-    // }
     const editProfileButton = async () => {
         try {
             await axios.patch("http://localhost:3000/profile/editProfile", {
                 fname,
                 lname,
+                gender,
                 bio,
                 skills,
                 photoURL
             }, { withCredentials: true });
+
+            // return(<div className="toast toast-top toast-center">
+            //     <div className="alert alert-info">
+            //         <span>New mail arrived.</span>
+            //     </div>
+            //     <div className="alert alert-success">
+            //         <span>Message sent successfully.</span>
+            //     </div>
+            // </div>)
         }
         catch (err) {
             console.log(err)
@@ -52,6 +50,12 @@ const EditUserProfile = ({ user }) => {
                             <fieldset className="fieldset">
                                 <legend className="fieldset-legend">Last Name</legend>
                                 <input value={lname} type="text" className="input" placeholder="Type here" onChange={(event) => { seteditLname(event.target.value) }} />
+                            </fieldset>
+                        </div>
+                        <div>
+                            <fieldset className="fieldset">
+                                <legend className="fieldset-legend">Gender</legend>
+                                <input value={gender} type="text" className="input" placeholder="Type here" onChange={(event) => { seteditGender(event.target.value) }} />
                             </fieldset>
                         </div>
                         <div>

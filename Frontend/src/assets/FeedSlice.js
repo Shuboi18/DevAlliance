@@ -5,7 +5,7 @@ const FeedSlice = createSlice({
     initialState: null,
     reducers: {
         addFeed: (state,action) => { return action.payload },
-        removeFeed: (state, action) => { return null }
+        removeFeed: () => null,
     }
 })
 

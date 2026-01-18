@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addFeed } from "../assets/FeedSlice";
 import { useEffect } from "react";
+import { addConnections } from "../assets/ConnectionSlice";
 
 const MyConnections = () => {
     const dispatch = useDispatch();
@@ -9,22 +9,47 @@ const MyConnections = () => {
     const callingMyConnections = async () => {
         try {
             const myConnectionsList = await axios.get("http://localhost:3000/connect/myConnections", { withCredentials: true });
-            console.log(myConnectionsList?.data)
-            dispatch(addFeed(myConnectionsList?.data));
-            
+            console.log(myConnectionsList.data)
+            dispatch(addConnections(myConnectionsList.data));
+
         }
-        catch (err)
-        {
+        catch (err) {
             console.log(err);
         }
     }
 
     useEffect(() => {
-        callingMyConnections()
-    },[])
+        callingMyConnections();
+    }, []);
+
+    if (!myConnections) return;
+    if (myConnections.length === 0) {
+        return (
+            <div><h1>No Connection </h1></div>
+        )
+    }
     return (
-        <div>{ myConnections.fname}</div>
-    )
+        <div className="text-center my-10">
+            <h1 className="text-bold text-3xl text-white">My Connections</h1>
+            {myConnections.map((req) => {
+                const { fname, lname, skills, age, gender, photoURL } = req.fromUserID;
+                return (
+                    <div className="m-4 mx-auto p-4 bg-base-300 flex w-fit">
+                        <div>
+                            <img className="w-20 h-20 rounded-lg" src={photoURL} alt="User Profile Pic" />
+                        </div>
+                        <div className="text-left mx-4">
+                            <h2 className="font-bold text-xl" key={req._id}>
+                                {fname + " " + lname}
+                            </h2>
+                            {age && gender && <p>{age + "," + gender}</p>}
+                            <p>{skills}</p>
+                        </div>
+                    </div>
+                )
+            })}
+        </div>
+    );
 }
 
 export default MyConnections

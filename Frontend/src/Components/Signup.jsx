@@ -10,6 +10,7 @@ const Signup = () => {
     const [bio, setBio] = useState("");
     const [skills, setSkills] = useState([]);
     const [photoURL, setPhotoURL] = useState("");
+    const [gender, setGender] = useState("");
     const navigate = useNavigate();
 
     const handleSignup = async () => {
@@ -19,6 +20,7 @@ const Signup = () => {
                 lname,
                 email,
                 age,
+                gender,
                 bio,
                 skills,
                 photoURL,
@@ -61,6 +63,12 @@ const Signup = () => {
                     </div>
                     <div>
                         <fieldset className="fieldset">
+                            <legend className="fieldset-legend">Gender</legend>
+                            <input value={gender} type="text" className="input" placeholder="Enter Gender" onChange={(event) => { setGender(event.target.value) }} />
+                        </fieldset>
+                    </div>
+                    <div>
+                        <fieldset className="fieldset">
                             <legend className="fieldset-legend">Bio</legend>
                             <input value={bio} type="text" className="input" placeholder="Type here" onChange={(event) => { setBio(event.target.value) }} />
                         </fieldset>
@@ -80,7 +88,7 @@ const Signup = () => {
                     <div>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Password</legend>
-                            <input value={password} type="text" className="input" placeholder="Type here" onChange={(event) => { setPassword(event.target.value) }} />
+                            <input value={password} type="text" className="input" placeholder="Enter Your Password" onChange={(event) => { setPassword(event.target.value) }} />
                         </fieldset>
                     </div>
 

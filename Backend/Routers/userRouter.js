@@ -4,11 +4,11 @@ const User = require("../Models/userSchema");
 const bcrypt = require("bcrypt");
 const { userAuth } = require("../userAuth");
 const ConnectRequest = require("../Models/connectReqSchema");
-const requestedFields = "fname lname age bio skills photoURL";
+const requestedFields = "fname lname age gender bio skills photoURL";
 userRouter.post("/user/signup", async (req, res) => {
   // Signup logic will go here
   try {
-    const { fname, lname, email, age, bio, skills, photoURL, password } =
+    const { fname, lname, email, age, gender, bio, skills, photoURL, password } =
       req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
@@ -16,6 +16,7 @@ userRouter.post("/user/signup", async (req, res) => {
       lname,
       email,
       age,
+      gender,
       bio,
       skills,
       photoURL,

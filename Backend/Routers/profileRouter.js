@@ -15,11 +15,12 @@ profileRouter.get("/profile/getProfile", userAuth, async (req, res) => {
 
 profileRouter.patch("/profile/editProfile", userAuth, async (req, res) => {
   const user = req.user;
-  const { fname, lname, bio, skills, photoURL } = req.body;
+  const { fname, lname, gender, bio, skills, photoURL } = req.body;
   try {
     const updatedUser = await User.findByIdAndUpdate(user._id, {
       fname,
       lname,
+      gender,
       bio,
       skills,
       photoURL,

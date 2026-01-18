@@ -3,7 +3,7 @@ const connectRouter = express.Router();
 const ConnectRequest = require("../Models/connectReqSchema");
 const { userAuth } = require("../userAuth");
 const User = require("../Models/userSchema");
-const requestedFields = ["fname", "lname", "age", "bio", "skills", "photoURL"];
+const requestedFields = ["fname", "lname", "age", "gender", "bio", "skills", "photoURL"];
 
 connectRouter.post(
   "/connect/request/:status/:toUserID",
@@ -76,7 +76,7 @@ connectRouter.get("/connect/pendingConnections", userAuth, async (req, res) => {
     const pendingConnections = await ConnectRequest.find({
       toUserID: user,
       status: "interested",
-    }).populate("fromUserID", requestedFields);
+    }).select("fromUserID").populate("fromUserID", requestedFields);
     if (!pendingConnections) {
       return res.send("No requests to show");
     }
