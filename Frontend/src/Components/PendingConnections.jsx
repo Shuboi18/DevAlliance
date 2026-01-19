@@ -21,8 +21,18 @@ const PendingConnections = () => {
 
     const acceptReqButton = async (_id) => {
         try {
-            await axios.patch("http://localhost:3000/connect/response/accepted/" + { _id })
-            console.log("Accepted Successfully");
+            const res = await axios.patch("http://localhost:3000/connect/response/accepted/" + _id, {}, { withCredentials: true })
+            console.log(res);
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    const rejectReqButton = async (_id) => {
+        try {
+            const res = await axios.patch("http://localhost:3000/connect/response/rejected/" + _id, { withCredentials: true })
+            console.log(res);
         }
         catch (err) {
             console.log(err)
@@ -45,7 +55,7 @@ const PendingConnections = () => {
             {myPendingConnections.map((req) => {
                 const { fname, lname, bio, skills, age, gender, photoURL } = req.fromUserID;
                 return (
-                    <div className="flex justify-between items-center m-4 mx-auto p-4 bg-base-300 flex w-2/3">
+                    <div className="justify-between items-center m-4 mx-auto p-4 bg-base-300 flex w-2/3">
                         <div>
                             <img className="w-20 h-20 rounded-lg" src={photoURL} alt="User Profile Pic" />
                         </div>
@@ -59,7 +69,7 @@ const PendingConnections = () => {
                         </div>
                         <div>
                             <button onClick={() => acceptReqButton(req._id)} className="mx-2 btn btn-primary">Accept</button>
-                            <button className="mx-2 btn btn-secondary">Reject</button>
+                            <button onClick={() => rejectReqButton(req._id)} className="mx-2 btn btn-secondary">Reject</button>
                         </div>
                     </div>
                 )

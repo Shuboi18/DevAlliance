@@ -1,20 +1,19 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addFeed } from "../assets/FeedSlice";
+import { addFeedInfo } from "../assets/FeedSlice";
 import { useEffect } from "react";
 import UserFeedCard from "./UserFeedCard";
 
 const UserFeed = () => {
     const dispatch = useDispatch();
-    const feedStore = useSelector((state) => state.Feed);
+    const feedStore = useSelector((store) => store.Feed);
     const getFeed = async () => {
 
         try {
             const res = await axios.get("http://localhost:3000/user/getUserFeed", { withCredentials: true });
             let data = res?.data;
-            data.map((feedData) => {
-                dispatch(addFeed(feedData));
-            })
+            console.log(data)
+            dispatch(addFeedInfo(data));
         } catch (err) {
             console.error(err);
         }

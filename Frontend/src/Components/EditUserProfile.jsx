@@ -7,7 +7,7 @@ const EditUserProfile = ({ user }) => {
     const [bio, seteditBio] = useState(user.bio);
     const [skills, seteditSkills] = useState(user.skills);
     const [photoURL, seteditPhotoURL] = useState(user.photoURL);
-    const [gender, seteditGender] = useState("");
+    const [gender, seteditGender] = useState(user.gender);
 
     const editProfileButton = async () => {
         try {

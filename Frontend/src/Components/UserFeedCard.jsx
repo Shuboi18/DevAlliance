@@ -10,8 +10,9 @@ const UserFeedCard = ({ feedStore }) => {
                 <div className="card-body">
                     <h2 className="card-title">Error</h2>
                     <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                    <div className="card-actions justify-end">
-                        <button className="btn btn-primary">Buy Now</button>
+                    <div className="flex items-center">
+                        <button className="mx-2 btn btn-primary">Interested</button>
+                        <button className="mx-2 btn btn-secondary">Ignore</button>
                     </div>
                 </div>
             </div>

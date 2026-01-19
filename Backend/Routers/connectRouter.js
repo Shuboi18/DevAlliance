@@ -54,9 +54,13 @@ connectRouter.patch(
   userAuth,
   async (req, res) => {
     try {
-      const user = req.user._id;
+      
+      const allowedStatus = ["accepted", "rejected"];
       const status = req.params.status;
       const connectID = req.params._id;
+      if (!allowedStatus.includes(status)) {
+        return res.status(400).send("Bad Request");
+      }
       const connectRes = await ConnectRequest.findByIdAndUpdate(connectID, {
         status,
       });
@@ -76,7 +80,7 @@ connectRouter.get("/connect/pendingConnections", userAuth, async (req, res) => {
     const pendingConnections = await ConnectRequest.find({
       toUserID: user,
       status: "interested",
-    }).select("fromUserID").populate("fromUserID", requestedFields);
+    }).select("_id fromUserID").populate("fromUserID", requestedFields);
     if (!pendingConnections) {
       return res.send("No requests to show");
     }

@@ -32,9 +32,9 @@ const MyConnections = () => {
         <div className="text-center my-10">
             <h1 className="text-bold text-3xl text-white">My Connections</h1>
             {myConnections.map((req) => {
-                const { fname, lname, skills, age, gender, photoURL } = req.fromUserID;
+                const { fname, lname, bio, skills, age, gender, photoURL } = req;
                 return (
-                    <div className="m-4 mx-auto p-4 bg-base-300 flex w-fit">
+                    <div className="justify-between items-center m-4 mx-auto p-4 bg-base-300 flex w-1/2">
                         <div>
                             <img className="w-20 h-20 rounded-lg" src={photoURL} alt="User Profile Pic" />
                         </div>
@@ -43,6 +43,7 @@ const MyConnections = () => {
                                 {fname + " " + lname}
                             </h2>
                             {age && gender && <p>{age + "," + gender}</p>}
+                            <p>{bio}</p>
                             <p>{skills}</p>
                         </div>
                     </div>
