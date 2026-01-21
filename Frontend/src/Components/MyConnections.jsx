@@ -5,12 +5,12 @@ import { addConnections } from "../assets/ConnectionSlice";
 
 const MyConnections = () => {
     const dispatch = useDispatch();
-    const myConnections = useSelector((store) => store.Feed)
+    const myConnections = useSelector((store) => store.connections)
     const callingMyConnections = async () => {
         try {
             const myConnectionsList = await axios.get("http://localhost:3000/connect/myConnections", { withCredentials: true });
-            console.log(myConnectionsList.data)
-            dispatch(addConnections(myConnectionsList.data));
+            console.log(myConnectionsList.data.data)
+            dispatch(addConnections(myConnectionsList.data.data));
 
         }
         catch (err) {
@@ -34,7 +34,7 @@ const MyConnections = () => {
             {myConnections.map((req) => {
                 const { fname, lname, bio, skills, age, gender, photoURL } = req;
                 return (
-                    <div className="justify-between items-center m-4 mx-auto p-4 bg-base-300 flex w-1/2">
+                    <div key={req._id} className="items-center m-4 mx-auto p-4 bg-base-300 flex w-1/4">
                         <div>
                             <img className="w-20 h-20 rounded-lg" src={photoURL} alt="User Profile Pic" />
                         </div>

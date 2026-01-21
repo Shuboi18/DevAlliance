@@ -49,29 +49,36 @@ connectRouter.post(
 );
 
 //doubt
-connectRouter.patch(
+connectRouter.post(
   "/connect/response/:status/:_id",
   userAuth,
   async (req, res) => {
     try {
-      
       const allowedStatus = ["accepted", "rejected"];
-      const status = req.params.status;
-      const connectID = req.params._id;
+      const loggedUser = req.user;
+      const { status, _id } = req.params;
       if (!allowedStatus.includes(status)) {
         return res.status(400).send("Bad Request");
       }
-      const connectRes = await ConnectRequest.findByIdAndUpdate(connectID, {
-        status,
+      const connectRes = await ConnectRequest.findOne({
+        _id: _id,
+        toUserID: loggedUser._id,
+        status: "interested",
       });
+      if (!connectRes) {
+        return res.status(404).send("No such connection request found");
+      }
+
+      connectRes.status = status;
+      const data = await connectRes.save();
       res.json({
-        message: "Connection Request Accepted Succesfully",
-        data: connectRes,
+        message: "Connection Request " + status + " successfully",
+        data: data,
       });
     } catch (err) {
       res.status(400).send("Something went wrong");
     }
-  }
+  },
 );
 
 connectRouter.get("/connect/pendingConnections", userAuth, async (req, res) => {
@@ -80,7 +87,9 @@ connectRouter.get("/connect/pendingConnections", userAuth, async (req, res) => {
     const pendingConnections = await ConnectRequest.find({
       toUserID: user,
       status: "interested",
-    }).select("_id fromUserID").populate("fromUserID", requestedFields);
+    })
+      .select("_id fromUserID")
+      .populate("fromUserID", requestedFields);
     if (!pendingConnections) {
       return res.send("No requests to show");
     }
@@ -102,7 +111,16 @@ connectRouter.get("/connect/myConnections", userAuth, async (req, res) => {
       .populate("fromUserID", requestedFields)
       .populate("toUserID", requestedFields);
 
-    res.send(myConnections);
+    const filteredConnections = myConnections.map((connection) => {
+      if (connection.fromUserID._id.toString() === user.toString()) {
+        return connection.toUserID;
+      }
+      return connection.fromUserID;
+    });
+
+    res.json({
+      data: filteredConnections,
+    });
   } catch (err) {
     res.status(400).send("Something went wrong");
   }

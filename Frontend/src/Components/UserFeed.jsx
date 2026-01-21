@@ -23,6 +23,8 @@ const UserFeed = () => {
         getFeed();
     }, []);
 
+    if (!feedStore) return;
+
     return (
         <div className="flex justify-center my-10"><UserFeedCard feedStore={feedStore} /></div>
     )

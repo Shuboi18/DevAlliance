@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { addUserInfo } from "../assets/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
@@ -8,6 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState("Password12345");
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const user = useSelector((state) => state.user)
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleLogin = async () => {
@@ -26,6 +27,10 @@ const Login = () => {
             setErrorMessage(err?.response?.data || "Something went wrong");
 
         }
+    }
+    
+    if (user) {
+       return navigate("/getUserFeed");
     }
     return (
 

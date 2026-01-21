@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const Signup = () => {
     const [email, setemailId] = useState("");
     const [password, setPassword] = useState("");
@@ -12,6 +13,7 @@ const Signup = () => {
     const [photoURL, setPhotoURL] = useState("");
     const [gender, setGender] = useState("");
     const navigate = useNavigate();
+    const user = useSelector((state) => state.user)
 
     const handleSignup = async () => {
         try {
@@ -31,6 +33,10 @@ const Signup = () => {
         catch (err) {
             console.log(err);
         }
+    }
+
+    if (user) {
+        return navigate("/getUserFeed");
     }
     return (
         <div className="flex justify-center my-2">

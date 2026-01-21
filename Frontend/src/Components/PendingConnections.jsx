@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { addConnectionReq } from "../assets/ConnectionRequestSlice";
+import { addConnectionReq, removeConnectionReq } from "../assets/ConnectionRequestSlice";
 
 const PendingConnections = () => {
     const dispatch = useDispatch();
@@ -19,20 +19,11 @@ const PendingConnections = () => {
         }
     }
 
-    const acceptReqButton = async (_id) => {
+    const AccRejReqButton = async (status, _id) => {
         try {
-            const res = await axios.patch("http://localhost:3000/connect/response/accepted/" + _id, {}, { withCredentials: true })
+            const res = await axios.post("http://localhost:3000/connect/response/" + status + "/" + _id, {}, { withCredentials: true })
             console.log(res);
-        }
-        catch (err) {
-            console.log(err)
-        }
-    }
-
-    const rejectReqButton = async (_id) => {
-        try {
-            const res = await axios.patch("http://localhost:3000/connect/response/rejected/" + _id, { withCredentials: true })
-            console.log(res);
+            dispatch(removeConnectionReq(_id));
         }
         catch (err) {
             console.log(err)
@@ -68,8 +59,8 @@ const PendingConnections = () => {
                             <p>{skills}</p>
                         </div>
                         <div>
-                            <button onClick={() => acceptReqButton(req._id)} className="mx-2 btn btn-primary">Accept</button>
-                            <button onClick={() => rejectReqButton(req._id)} className="mx-2 btn btn-secondary">Reject</button>
+                            <button onClick={() => AccRejReqButton("accepted", req._id)} className="mx-2 btn btn-primary">Accept</button>
+                            <button onClick={() => AccRejReqButton("rejected", req._id)} className="mx-2 btn btn-secondary">Reject</button>
                         </div>
                     </div>
                 )
