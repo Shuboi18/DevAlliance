@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch} from "react-redux";
 import { addUserInfo } from "../assets/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
@@ -8,7 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = useSelector((state) => state.user)
+    //const user = useSelector((state) => state.user)
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleLogin = async () => {
@@ -20,18 +20,21 @@ const Login = () => {
             },
                 { withCredentials: true }
             );
-            dispatch(addUserInfo(res?.data?.user));
-            navigate("/getUserFeed");
+            if (res.status === 200) {
+                dispatch(addUserInfo(res?.data?.user));
+                navigate("/getUserFeed");
+            }
+            else {
+                console.log("Login failed");
+            }
         }
         catch (err) {
             setErrorMessage(err?.response?.data || "Something went wrong");
+            console.error(setErrorMessage)
 
         }
     }
-    
-    if (user) {
-       return navigate("/getUserFeed");
-    }
+
     return (
 
         <div className="flex justify-center my-10">

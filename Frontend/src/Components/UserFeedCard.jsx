@@ -22,7 +22,7 @@ const UserFeedCard = ({ feedStore }) => {
             feedStore.map((feed) => {
                 const { _id, fname, lname, age, bio, skills, photoURL, gender } = feed;
                 return (<div className="" key={_id}>
-                    <div className="card bg-base-100 w-96 shadow-sm">
+                    <div className="card bg-base-300 w-96 shadow-sm">
                         <figure>
                             <img
                                 src={photoURL}

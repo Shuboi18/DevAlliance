@@ -45,7 +45,7 @@ userRouter.post("/user/login", async (req, res) => {
       res.cookie("loginToken", token, {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
-      res.send(user);
+      res.status(200).json({ message: "Login successful", data: user });
     }
   } catch (err) {
     res.status(500).send("Error logging in user");

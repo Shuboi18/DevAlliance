@@ -2,16 +2,21 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import { removeUserInfo } from "../assets/userSlice";
 import axios from "axios";
+import { useEffect } from "react";
 const NavBar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = useSelector((state) => state.user);
+    const user = useSelector((store) => store.user);
+    console.log("User in NavBar:", user);
 
     const buttonLogout = async () => {
         await axios.post("http://localhost:3000/user/logout", {}, { withCredentials: true });
         dispatch(removeUserInfo());
         navigate("/login");
     }
+    useEffect(() => {
+        console.log("User in NavBar useEffect:", user);
+    }, [user]);
     return (<div>
         <div className="navbar bg-base-300 shadow-sm">
             <div className="flex-1">
